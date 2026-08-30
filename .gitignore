@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+
+# Helm
+*.tgz
+
+# Secrets
+*.secret.yaml
+secrets.yaml
