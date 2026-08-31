@@ -1,0 +1,11 @@
+replicaCount: 3
+
+image:
+  repository: frontend
+  tag: "1.0.0"
+
+environment:
+  name: production
+
+ingress:
+  enabled: true
