@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: product-service
   labels:
-    app: frontend
+    app: product-service
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: frontend
+      app: product-service
   template:
     metadata:
       labels:
-        app: frontend
+        app: product-service
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: frontend
+        - name: product-service
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
             - name: APP_VERSION
               value: "{{ .Values.image.tag }}"
@@ -32,12 +32,12 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 8081
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 8081
             initialDelaySeconds: 10
             periodSeconds: 20
