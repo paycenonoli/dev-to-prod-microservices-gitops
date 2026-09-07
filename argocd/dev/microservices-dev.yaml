@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: microservices-dev
+  namespace: argocd
+spec:
+  project: default
+
+  sources:
+
+    # Git repository containing environment-specific values
+    - repoURL: https://github.com/paycenonoli/dev-to-prod-microservices-gitops.git
+      targetRevision: main
+      ref: values
+
+    # Frontend
+    - repoURL: https://github.com/paycenonoli/dev-to-prod-microservices-gitops.git
+      targetRevision: main
+      path: helm/frontend
+      helm:
+        valueFiles:
+          - $values/environments/dev/frontend-values.yaml
+
+    # Product service
+    - repoURL: https://github.com/paycenonoli/dev-to-prod-microservices-gitops.git
+      targetRevision: main
+      path: helm/product-service
+      helm:
+        valueFiles:
+          - $values/environments/dev/product-values.yaml
+
+    # Order service
+    - repoURL: https://github.com/paycenonoli/dev-to-prod-microservices-gitops.git
+      targetRevision: main
+      path: helm/order-service
+      helm:
+        valueFiles:
+          - $values/environments/dev/order-values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: microservices-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=false
