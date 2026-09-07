@@ -1,11 +1,15 @@
 replicaCount: 3
 
 image:
-  repository: frontend
-  tag: "1.0.0"
+  repository: 417521971848.dkr.ecr.us-east-1.amazonaws.com/frontend
+  tag: "1.1.0"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: ecr-registry-secret
 
 environment:
   name: production
 
 ingress:
-  enabled: true
+  enabled: false
